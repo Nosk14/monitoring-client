@@ -1,5 +1,4 @@
 import requests
-from datetime import datetime
 
 
 class Client(object):
@@ -11,7 +10,7 @@ class Client(object):
         self.zone = zone
         self.dat_endpoint = "{}/data".format(self.endpoint)
 
-    def send_data(self, temperature, humidity, time=datetime.now()):
+    def send_data(self, temperature, humidity, time):
         data = {
             "zone": self.zone,
             "data": [
