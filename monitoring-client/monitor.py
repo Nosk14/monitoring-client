@@ -42,7 +42,7 @@ if __name__ == '__main__':
         raise Exception("A zone must be specified")
 
     log_level = os.environ.get("LOG_LEVEL", 20)
-    log.basicConfig(format='[%(asctime)s][%(levelname)s] %(message)s', level=log_level)
+    log.basicConfig(format='[%(asctime)s][%(levelname)s] %(message)s', level=int(log_level))
 
     monitor = Monitor(int(pin), zone, endpoint, int(frequency))
     monitor.run()
