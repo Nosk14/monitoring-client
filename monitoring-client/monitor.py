@@ -17,6 +17,7 @@ class Monitor(object):
         super().__init__()
         self.__dht = DHT22(pin)
         self.frequency = freq
+        self.zone = zone
         self.client = Client(zone, api_endpoint)
 
     def run(self):
@@ -24,7 +25,7 @@ class Monitor(object):
             h, t, e = self.__dht.read_data()
             if not e:
                 self.client.send_data(t, h, datetime.now())
-                log.info("Data sent correctly [{},{}]".format(t, h))
+                log.info("Data sent correctly [{}, {}, {}]".format(self.zone, t, h))
                 sleep(self.frequency)
             else:
                 log.info("Error reading data [{},{}]".format(t, h))
