@@ -28,7 +28,7 @@ class Monitor(object):
                 log.info("Data sent correctly [{}, {}, {}]".format(self.zone, t, h))
                 sleep(self.frequency)
             else:
-                log.info("Error reading data [{},{}]".format(t, h))
+                log.warning("Error reading data [{}, {}, {}]".format(self.zone, t, h))
                 sleep(30)
 
 
