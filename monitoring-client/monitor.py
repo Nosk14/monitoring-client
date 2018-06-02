@@ -10,14 +10,13 @@ GPIO.setmode(GPIO.BCM)
 
 
 class Monitor(object):
-    ZONE = "test"
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
-    def __init__(self, pin, api_endpoint, freq):
+    def __init__(self, pin, zone, api_endpoint, freq):
         super().__init__()
         self.__dht = DHT22(pin)
         self.frequency = freq
-        self.client = Client(self.ZONE, api_endpoint)
+        self.client = Client(zone, api_endpoint)
 
     def run(self):
         while True:
@@ -33,7 +32,10 @@ if __name__ == '__main__':
     frequency = os.environ.get("FREQUENCY", 600)
     endpoint = os.environ.get("ENDPOINT", 'http://localhost:5000')
     pin = os.environ.get("PIN", 4)
+    zone = os.environ.get("ZONE")
+    if not zone:
+        raise Exception("A zone must be specified")
 
-    monitor = Monitor(int(pin), endpoint, int(frequency))
+    monitor = Monitor(int(pin), zone, endpoint, int(frequency))
     monitor.run()
 
