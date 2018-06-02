@@ -1,5 +1,6 @@
 import os
 import RPi.GPIO as GPIO
+import logging as log
 from time import sleep
 from dht22 import DHT22
 from client import Client
@@ -23,8 +24,10 @@ class Monitor(object):
             h, t, e = self.__dht.read_data()
             if not e:
                 self.client.send_data(t, h, datetime.now())
+                log.info("Data sent correctly [{},{}]".format(t, h))
                 sleep(self.frequency)
             else:
+                log.info("Error reading data [{},{}]".format(t, h))
                 sleep(30)
 
 
@@ -35,6 +38,9 @@ if __name__ == '__main__':
     zone = os.environ.get("ZONE")
     if not zone:
         raise Exception("A zone must be specified")
+
+    log_level = os.environ.get("LOG_LEVEL", 20)
+    log.basicConfig(format='[%(asctime)s][%(levelname)s] %(message)s', level=log_level)
 
     monitor = Monitor(int(pin), zone, endpoint, int(frequency))
     monitor.run()
