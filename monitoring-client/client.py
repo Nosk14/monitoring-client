@@ -1,7 +1,6 @@
 import requests
-from pytz import timezone
+import logging as log
 
-tz = timezone('Europe/Madrid')
 
 class Client(object):
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
@@ -17,11 +16,11 @@ class Client(object):
             "zone": self.zone,
             "data": [
                 {
-                    "time": time.replace(tzinfo=tz).strftime(self.DATE_FORMAT),
+                    "time": time.strftime(self.DATE_FORMAT),
                     "temperature": temperature,
                     "humidity": humidity
                 }
             ]
         }
-
+        log.debug("Data sent: [{}]".format(str(data)))
         requests.put(self.dat_endpoint, json=data, headers=self.HEADERS)

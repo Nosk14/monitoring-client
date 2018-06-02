@@ -5,12 +5,13 @@ from time import sleep
 from dht22 import DHT22
 from client import Client
 from datetime import datetime
-
+from pytz import timezone
 
 GPIO.setmode(GPIO.BCM)
 
 
 class Monitor(object):
+    TZ = timezone('Europe/Madrid')
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
     def __init__(self, pin, zone, api_endpoint, freq):
@@ -24,7 +25,7 @@ class Monitor(object):
         while True:
             h, t, e = self.__dht.read_data()
             if not e:
-                self.client.send_data(t, h, datetime.now())
+                self.client.send_data(t, h, datetime.now().replace(tzinfo=self.TZ))
                 log.info("Data sent correctly [{}, {}, {}]".format(self.zone, t, h))
                 sleep(self.frequency)
             else:
