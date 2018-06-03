@@ -25,7 +25,7 @@ class Monitor(object):
         while True:
             h, t, e = self.__dht.read_data()
             if not e:
-                self.client.send_data(t, h, datetime.now().astimezone(self.TZ))
+                self.client.send_data(t, h, datetime.now(self.TZ))
                 log.info("Data sent correctly [{}, {}, {}]".format(self.zone, t, h))
                 sleep(self.frequency)
             else:
