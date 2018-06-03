@@ -56,12 +56,14 @@ class DHT22(object):
             self.__wait_while(GPIO.LOW)
             while GPIO.input(self.pin):
                 signals[bit] += 1
+                if signals[bit] > COUNT_TIMEOUT:
+                    raise TimeoutError("Signal timeout")
 
         return signals
 
     def __signal_to_bytes(self, signal):
-        mean = sum(signal)/len(signal)
-        bits = [0 if x < mean else 1 for x in signal]
+        treshold = min(signal) * 1.8
+        bits = [0 if x < treshold else 1 for x in signal]
         byte_list = []
         for i in range(5):
             bin_number = int(''.join(str(x) for x in bits[i*8:(i+1)*8]), base=2)
