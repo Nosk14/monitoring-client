@@ -3,7 +3,6 @@ import logging as log
 
 
 class Client:
-    HEADERS = {'Content-Type': 'application/json'}
 
     def __init__(self, zone, endpoint):
         self.endpoint = endpoint
@@ -11,4 +10,4 @@ class Client:
 
     def send_data(self, data):
         log.debug("Data sent: [{}]".format(str(data)))
-        requests.put(self.endpoint, json=data, headers=self.HEADERS)
+        requests.put(self.endpoint, json=data)
