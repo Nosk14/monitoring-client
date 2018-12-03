@@ -2,7 +2,7 @@ import requests
 import logging as log
 
 
-class Client(object):
+class Client:
     HEADERS = {'Content-Type': 'application/json'}
 
     def __init__(self, zone, endpoint):
